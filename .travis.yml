@@ -3,5 +3,4 @@ node_js:
   - 9.5.0
 script:
   - npm run lint
-  - npm run build
   - cd client && npm install
