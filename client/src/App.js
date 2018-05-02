@@ -83,6 +83,7 @@ class App extends Component {
     }
 
   render() {
+	console.log("gg noob");
     const { boards } = this.state;
     return (
       <div className="App">
