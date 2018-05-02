@@ -18,7 +18,8 @@ class App extends Component {
     this.state = {
       boards: [],
       boardName: "",
-      open: false
+      open: false,
+      dataId:null
 
     };
     
@@ -38,7 +39,7 @@ class App extends Component {
       }.bind(this));
 
   }
-  componentWillMount(){
+  componentDidMount(){
     firebasedb.child("/users/"+userNameId+"/boards").on('value', (snapshot) => {
       let data = snapshot.val()
       if(data != null){
@@ -58,18 +59,22 @@ class App extends Component {
     const y = date.getFullYear();
     const time = `${d}/${m}/${y}`;
 
+
     let tryid = firebasedb.child('/boards').push({
       "boardName":this.state.boardName,
       "createdBy":localStorage.getItem("displayName"),
       "members":[],
-      "createdOn":time
+      "createdOn":time,
+      "cards":[]
     })
     let dataId = tryid.path.pieces_[1];
+    this.setState({dataid:dataId});
 
     firebasedb.child("/users/"+userNameId+"/boards/").push({
       "boardId": dataId,
       "boardName":this.state.boardName,
-      "createdBy":localStorage.getItem("displayName")
+      "createdBy":localStorage.getItem("displayName"),
+      "createdOn":time
     });
 
   }
@@ -125,7 +130,7 @@ class App extends Component {
             <Card.Group style={{margin: 'auto'}}>
             {/* <SortableList items={this.state.boards} onSortEnd={this.onSortEnd} /> */}
             {this.state.boards ? this.state.boards.map((items,index) => (
-             <Boards key={index} data = {items} history = {this.props.history} />
+             <Boards index={index} data = {items} history = {this.props.history} />
            ))   : ""}
               </Card.Group>
         </div>

@@ -44,7 +44,6 @@ class TrelloCards extends Component {
 
     
     handleClick = (index) => {
-        console.log("I clicked u",index)
     };
     
     handleChange(event) {

@@ -32,12 +32,8 @@ class Start extends Component {
 
     close() {
 
-        console.log("WTF",this.state)
-        const boardId = this.state.boardId;
-        const indexVal = this.state.cards? this.state.cards.length: 0;
-        // console.log(this.state.cards.length);
-        // const indexVal = this.state.leng;
-    
+        const indexVal = this.state.cards ? this.state.cards.length: 0;
+        const boardId = localStorage.getItem("boardId");
 
         const date = new Date();
         const d = date.getDate();
@@ -55,36 +51,21 @@ class Start extends Component {
         this.setState({ open: false });
     }
 
-    componentDidMount(){
+    componentWillMount(){
 
         const boardId = localStorage.getItem("boardId");
-        console.log("Yo Data",boardId);
-
         firebasedb.child("/boards/"+boardId+"/cards").on('value', (snapshot) => {
             let data = snapshot.val()
             if(data != null){
-                
-                // let arr = Object.keys(data).map(function(k) { return data[k] });
 
                 this.setState({
                     cards:data,
                     boardId: boardId,
                 })
-                console.log("Yo Datas",this.state);
-                localStorage.removeItem("boardId");
             }
             
         })
   }
-
-    // componentDidMount() {
-
-    //     // this.setState({
-    //     //     cardName: this.props.cardName,
-    //     //     cardDesc: this.props.cardDesc
-    //     // });
-    // }
-
 
      handleChangeForName(event) {
         newName = event.target.value

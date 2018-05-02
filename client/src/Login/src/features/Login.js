@@ -50,22 +50,14 @@ export default class Login extends React.Component {
             return;
         }
 
+
         firebaseAuth().onAuthStateChanged(user => {
             if (user) {
-
-
-                // me.writeUsers(user.uid,user.displayName,user.email,user.photoUrl)
-
-                console.log("User signed in: ", JSON.stringify(user.displayName));
-                // console.log("User DAta",user.email);
                 const emailInfoValue = user.email.substring(0,user.email.indexOf('@'));
                 localStorage.setItem(emailInfo,emailInfoValue)
                 localStorage.setItem(displayName,user.displayName);
                 localStorage.removeItem(firebaseAuthKey);
                 localStorage.setItem("photoURL",user.photoURL);
-                // here you could authenticate with you web server to get the
-                // application specific token so that you do not have to
-                // authenticate with firebase every time a user logs in
                 localStorage.setItem(appTokenKey, user.uid);
 
                 // store the token

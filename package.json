@@ -37,11 +37,11 @@
   },
   "scripts": {
     "clean": "rm -rf dist && mkdir dist",
-    "build": "cd client && npm install && npm run build",
+    "build": "cd client && npm run build",
     "dev": "cd client && webpack-dev-server",
     "serve:client": "cd client && npm start",
     "serve:server": "node ./server/bin/www",
-    "start": "nodejs ./server/bin/www",
+    "start": "node ./server/bin/www",
     "lint": "eslint client/src/*.js",
     "test": "cd client && mocha --compilers js:babel-register"
   },

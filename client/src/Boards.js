@@ -16,11 +16,8 @@ class Boards extends Component {
     }
 
     handleClick = (e) => {
-        // Handle Click
-        // Redirected to Tasks of boards
         localStorage.setItem("boardId",this.props.data.boardId)
         this.props.history.push('/Tasks')
-
     }
 
 
