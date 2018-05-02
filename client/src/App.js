@@ -22,7 +22,7 @@ class App extends Component {
       dataId:null
 
     };
-    
+
 
       this.handleLogout = this.handleLogout.bind(this);
       this.close = this.close.bind(this);
@@ -40,6 +40,8 @@ class App extends Component {
 
   }
   componentDidMount(){
+
+
     firebasedb.child("/users/"+userNameId+"/boards").on('value', (snapshot) => {
       let data = snapshot.val()
       if(data != null){
@@ -59,6 +61,8 @@ class App extends Component {
     const y = date.getFullYear();
     const time = `${d}/${m}/${y}`;
 
+    const userNamesId = localStorage.getItem("emailInfo");
+    console.log("yt",userNamesId);
 
     let tryid = firebasedb.child('/boards').push({
       "boardName":this.state.boardName,
@@ -70,7 +74,7 @@ class App extends Component {
     let dataId = tryid.path.pieces_[1];
     this.setState({dataid:dataId});
 
-    firebasedb.child("/users/"+userNameId+"/boards/").push({
+    firebasedb.child("/users/"+userNamesId+"/boards/").push({
       "boardId": dataId,
       "boardName":this.state.boardName,
       "createdBy":localStorage.getItem("displayName"),
