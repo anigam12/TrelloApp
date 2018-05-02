@@ -20,13 +20,13 @@ class Tasks extends Component {
 		firebasedb.child("/boards/"+boardId).on('value', (snapshot) => {
 			let data = snapshot.val()
 			if(data != null){
-				
+
 				this.setState({
 					cards:data,
 					boardId : boardId
 				})
 			}
-			
+
 		})
   }
 

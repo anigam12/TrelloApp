@@ -4,13 +4,12 @@ import _ from 'lodash';
 
 
 class Mods extends Component {
-   
+
     render() {
-        
+
         return (
             <React.Fragment>
-                <List.Item >{this.props.title}</List.Item>
-                
+                <List.Item style={{marginBottom: 10}}>{this.props.title}</List.Item>
             </React.Fragment>);
     }
 }

@@ -8,6 +8,26 @@ import { Form, TextArea } from 'semantic-ui-react';
 import { Modal } from 'semantic-ui-react';
 import firebasedb from './firebase/firebase';
 import addTasks from './addTasks';
+import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+
+const SortableItem = SortableElement(({value}) =>
+<Segment inverted>
+<Mods title={value}/>
+</Segment>
+);
+
+const SortableList = SortableContainer(({items}) => {
+  return (
+    <ul>
+      {items ? items.map((value, index) => (
+
+        <SortableItem key={`item-${index}`} index={index} value={value} />
+
+      )): ""}
+    </ul>
+  );
+});
+
 
 let valueLocal = "";
 class TrelloCards extends Component {
@@ -35,20 +55,42 @@ class TrelloCards extends Component {
     }
 
      show = (index) => {
-        this.setState({ 
+        this.setState({
             open: true,
-            cardIndex: index
+            cardIndex: index,
+            cards: [],
+            currentSortIndex: 0,
         })
     };
 
 
-    
+
     handleClick = (index) => {
     };
-    
+    componentDidMount(){
+      this.setState({cards: this.props.cards});
+    }
+
     handleChange(event) {
         valueLocal = event.target.value
     }
+
+    setSortIndex(index){
+      this.setState({currentSortIndex : index});
+      return false;
+    }
+
+    onSortEnd = ({oldIndex, newIndex}) => {
+      let cards = this.props.cards;
+      if(cards[this.state.currentSortIndex]){
+        let currentSortList = cards[this.state.currentSortIndex].taskName;
+        currentSortList = arrayMove(currentSortList, oldIndex, newIndex);
+        cards[this.state.currentSortIndex].taskName = currentSortList;
+        this.setState({cards});
+        this.props.updateCards(cards);
+      }
+
+  };
 
     render() {
         const { open } = this.state;
@@ -69,10 +111,11 @@ class TrelloCards extends Component {
                             </Card.Description>
                         </Card.Content>
                         <Card.Content>
-                            <Segment inverted>
-                                <List divided inverted relaxed>
-                                    {items.taskName ? items.taskName.map((value)=>(<Mods title={value}/>)) : <div> No Tasks yet </div> } 
-                                </List>                            
+                            <Segment>
+                                {/* <List divided inverted relaxed>
+                                    {items.taskName ? items.taskName.map((value)=>(<Mods title={value}/>)) : <div> No Tasks yet </div> }
+                                </List> */}
+                                <SortableList items={items.taskName} shouldCancelStart={(event) => this.setSortIndex(index)} onSortEnd={this.onSortEnd} />
                             </Segment>
                         </Card.Content>
                         <Button primary onClick={() => this.show(index)}>Add A Task</Button>
@@ -94,7 +137,7 @@ class TrelloCards extends Component {
                                 </Button>
                             </Modal.Actions>
                         </Modal>
-                        
+
                     </Card>))}
                 </Card.Group>
             </React.Fragment>

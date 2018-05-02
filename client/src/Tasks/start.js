@@ -26,9 +26,9 @@ class Start extends Component {
         this.close = this.close.bind(this);
     }
 
-    
+
     show = () => this.setState({ open: true })
-    
+
 
     close() {
 
@@ -63,18 +63,23 @@ class Start extends Component {
                     boardId: boardId,
                 })
             }
-            
+
         })
   }
 
      handleChangeForName(event) {
         newName = event.target.value
         console.log(newName)
-    
+
   }
     handleChangeForDesc(event){
         newDesc = event.target.value
         console.log(newName)
+  }
+
+  updateCards = (cards) => {
+    this.setState({cards});
+    console.log("Parent updated");
   }
     render() {
         const { open } = this.state;
@@ -119,7 +124,7 @@ class Start extends Component {
                         </Icon.Group>
                     </Header>
                 </Segment>
-                <TrelloCards cards={this.state.cards} boardId={this.state.boardId} />
+                <TrelloCards cards={this.state.cards} updateCards={this.updateCards} boardId={this.state.boardId} />
             </div>
         );
     }
